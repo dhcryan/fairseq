@@ -352,7 +352,9 @@ def distributed_main(i, main, cfg: FairseqConfig, kwargs):
         torch.cuda.set_device(cfg.distributed_training.device_id)
     if cfg.distributed_training.distributed_rank is None:  # torch.multiprocessing.spawn
         cfg.distributed_training.distributed_rank = kwargs.pop("start_rank", 0) + i
-
+    # cfg.distributed_training.device_id=0
+    # torch.cuda.set_device(cfg.distributed_training.device_id)
+    
     cfg.distributed_training.distributed_rank = distributed_init(cfg)
 
     after_distributed_init_fn = kwargs.pop("after_distributed_init_fn", None)
