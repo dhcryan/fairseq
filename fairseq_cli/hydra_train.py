@@ -29,8 +29,6 @@ def hydra_main(cfg: FairseqConfig) -> float:
 
 def _hydra_main(cfg: FairseqConfig, **kwargs) -> float:
     add_defaults(cfg)
-    NUM_GPU = torch.cuda.device_count()
-    torch.multiprocessing.spawn(main_worker, nprocs=n_gpus, args=(n_gpus, )) 
     if cfg.common.reset_logging:
         reset_logging()  # Hydra hijacks logging, fix that
     else:

@@ -1,7 +1,7 @@
 joblib==1.1.1
 progressbar2==3.53.1
-# python_Levenshtein==0.12.2
-# editdistance==0.3.1
+python_Levenshtein==0.12.2
+editdistance==0.3.1
 omegaconf==2.0.6
 tensorboard==2.4.1
 tensorboardX==2.1

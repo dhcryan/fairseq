@@ -348,13 +348,14 @@ def distributed_init(cfg: FairseqConfig):
 
 def distributed_main(i, main, cfg: FairseqConfig, kwargs):
     cfg.distributed_training.device_id = i
+    #gpu를 쓸 때만 실행
     if torch.cuda.is_available() and not cfg.common.cpu and not cfg.common.tpu:
         torch.cuda.set_device(cfg.distributed_training.device_id)
+        #Distributed data parallel 정의 
+        # cfg.model =torch.nn.parallel.DistributedDataParallel(cfg.model, device_ids=[cfg.distributed_training.device_id]).cuda()
     if cfg.distributed_training.distributed_rank is None:  # torch.multiprocessing.spawn
         cfg.distributed_training.distributed_rank = kwargs.pop("start_rank", 0) + i
-    # cfg.distributed_training.device_id=0
-    # torch.cuda.set_device(cfg.distributed_training.device_id)
-    
+    # rank를 매기는 듯?
     cfg.distributed_training.distributed_rank = distributed_init(cfg)
 
     after_distributed_init_fn = kwargs.pop("after_distributed_init_fn", None)
@@ -377,7 +378,6 @@ def call_main(cfg: FairseqConfig, main, **kwargs):
             start_rank = cfg.distributed_training.distributed_rank
             cfg.distributed_training.distributed_rank = None  # assign automatically
             kwargs["start_rank"] = start_rank
-
             torch.multiprocessing.spawn(
                 fn=distributed_main,
                 args=(main, cfg, kwargs),

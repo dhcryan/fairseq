@@ -289,7 +289,7 @@ class Wav2Vec2Config(FairseqDataclass):
     )
     fp16: bool = field(default=False, metadata={"help": "If fp16 is being used"})
 
-
+# 애(class)
 @register_model("wav2vec2", dataclass=Wav2Vec2Config)
 class Wav2Vec2Model(BaseFairseqModel):
     def __init__(self, cfg: Wav2Vec2Config):
@@ -298,7 +298,7 @@ class Wav2Vec2Model(BaseFairseqModel):
 
         feature_enc_layers = eval(cfg.conv_feature_layers)
         self.embed = feature_enc_layers[-1][0]
-
+        # 애
         self.feature_extractor = ConvFeatureExtractionModel(
             conv_layers=feature_enc_layers,
             dropout=0.0,
@@ -385,6 +385,7 @@ class Wav2Vec2Model(BaseFairseqModel):
         self.mask_emb = nn.Parameter(
             torch.FloatTensor(cfg.encoder_embed_dim).uniform_()
         )
+        # 애
         encoder_cls = TransformerEncoder
         if cfg.layer_type == "conformer" and cfg.pos_enc_type in ["rel_pos", "rope"]:
             encoder_cls = ConformerEncoder
